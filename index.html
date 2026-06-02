@@ -1,176 +1,680 @@
-<!DOCTYPE html>
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jugos Tía Martha</title>
+  <title>RS4 Rectimatic | Software Administrativo para Rectificadoras</title>
+  <meta name="description" content="RS4 Rectimatic: sistema administrativo para rectificadoras. Control de órdenes, clientes, inventario, facturación, reportes y usuarios desde una plataforma moderna." />
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg: #070914;
+      --bg2: #0c1020;
+      --card: rgba(13, 17, 32, 0.88);
+      --red: #e31b23;
+      --orange: #ff7a00;
+      --orange2: #ff9b3d;
+      --white: #ffffff;
+      --muted: #a7adbd;
+      --line: rgba(255, 122, 0, 0.22);
+      --radius: 26px;
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--white);
+      background:
+        linear-gradient(rgba(255,122,0,.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,122,0,.045) 1px, transparent 1px),
+        radial-gradient(circle at 20% 10%, rgba(227,27,35,.20), transparent 28%),
+        radial-gradient(circle at 80% 20%, rgba(255,122,0,.18), transparent 30%),
+        var(--bg);
+      background-size: 90px 90px, 90px 90px, auto, auto, auto;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1180px, 92%); margin: auto; }
+
     header {
-      background-color: #8bc34a;
-      text-align: center;
-      padding: 2em 1em;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(7,9,20,.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,122,0,.18);
+    }
+
+    .nav {
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .brand-mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--red), var(--orange));
+      box-shadow: 0 0 30px rgba(255,122,0,.45);
+    }
+
+    .brand-text strong {
+      display: block;
+      font-size: 1.35rem;
+    }
+
+    .brand-text span {
+      display: block;
+      color: var(--muted);
+      font-size: .76rem;
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 26px;
+      align-items: center;
+      color: #d7dbea;
+      font-size: .96rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 24px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,122,0,.35);
+      font-weight: 800;
+      transition: .25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), var(--orange2));
+      color: white;
+      box-shadow: 0 0 35px rgba(255,122,0,.28);
+    }
+
+    .btn-dark {
+      background: rgba(255,255,255,.04);
       color: white;
     }
 
-    .logo {
-      width: 150px;
-      margin-bottom: 1em;
+    .btn:hover { transform: translateY(-3px); }
+
+    .hero {
+      padding: 92px 0 70px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--orange2);
+      border: 1px solid rgba(255,122,0,.35);
+      border-radius: 999px;
+      padding: 12px 18px;
+      background: rgba(255,122,0,.06);
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 26px;
     }
 
     h1 {
-      font-size: 2.5em;
-      margin: 0.2em 0;
+      font-size: clamp(3.2rem, 8vw, 6.6rem);
+      line-height: .95;
+      letter-spacing: -3px;
+      margin-bottom: 26px;
     }
 
-    .btn-wsp {
-      background-color: #25d366;
-      color: white;
-      padding: 0.6em 1.2em;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-size: 1em;
+    .gradient {
+      display: block;
+      color: var(--orange);
+      text-shadow: 0 0 30px rgba(255,122,0,.55);
     }
 
-    main {
-      max-width: 600px;
-      margin: 2em auto;
-      background-color: white;
-      padding: 2em;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    .hero p {
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      line-height: 1.65;
+      max-width: 680px;
+      margin-bottom: 34px;
     }
 
-    h2 {
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .visual-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,122,0,.10), rgba(255,255,255,.025));
+      padding: 22px;
+      box-shadow: 0 0 70px rgba(255,122,0,.13);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mock-browser {
+      background: #0b0f1d;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 22px;
+      overflow: hidden;
+    }
+
+    .mock-top {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 16px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); opacity: .9; }
+    .dot:nth-child(2) { background: var(--red); }
+    .dot:nth-child(3) { background: #4ecb71; }
+
+    .dashboard {
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .dash-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .dash-box {
+      min-height: 112px;
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .dash-box b {
+      display: block;
+      color: var(--orange2);
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .dash-box span { color: var(--muted); font-size: .95rem; }
+
+    .section { padding: 78px 0; }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 {
+      font-size: clamp(2.3rem, 5vw, 4.6rem);
+      line-height: 1.02;
+      letter-spacing: -2px;
+      margin-bottom: 18px;
+    }
+    .section-title p {
+      color: var(--muted);
+      max-width: 760px;
+      margin: auto;
+      font-size: 1.15rem;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 48px;
+    }
+
+    .stat {
       text-align: center;
-      color: #333;
+      padding: 34px 18px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
 
-    h3 {
-      color: #4caf50;
+    .stat b {
+      color: var(--orange);
+      font-size: 3.8rem;
+      text-shadow: 0 0 25px rgba(255,122,0,.45);
     }
 
-    .producto {
+    .stat span {
+      display: block;
+      color: var(--muted);
+      letter-spacing: 3px;
+      margin-top: 10px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .card {
+      min-height: 250px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 32px;
+      background: var(--card);
+      transition: .25s;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255,122,0,.60);
+      box-shadow: 0 0 45px rgba(255,122,0,.12);
+    }
+
+    .icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,122,0,.10);
+      color: var(--orange);
+      font-size: 1.7rem;
+      margin-bottom: 24px;
+    }
+
+    .card h3 { font-size: 1.45rem; margin-bottom: 14px; }
+    .card p { color: var(--muted); line-height: 1.65; font-size: 1rem; }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 26px 16px;
+    }
+
+    .num {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 20px;
+      color: var(--orange);
+      border: 1px solid rgba(255,122,0,.45);
+      font-size: 2.2rem;
+      font-weight: 900;
+      box-shadow: 0 0 28px rgba(255,122,0,.18);
+    }
+
+    .step h3 { margin-bottom: 10px; }
+    .step p { color: var(--muted); line-height: 1.55; }
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .plan {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      position: relative;
+    }
+
+    .plan.featured {
+      border-color: rgba(255,122,0,.75);
+      box-shadow: 0 0 60px rgba(255,122,0,.18);
+      transform: scale(1.03);
+    }
+
+    .plan small {
+      color: var(--orange2);
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+
+    .price {
+      font-size: 4.2rem;
+      font-weight: 900;
+      margin: 20px 0 6px;
+    }
+
+    .price span { font-size: 1.1rem; color: var(--muted); }
+    .plan ul { list-style: none; margin: 24px 0; display: grid; gap: 14px; color: #dfe4f3; }
+    .plan li::before { content: "✓"; color: var(--orange); font-weight: 900; margin-right: 10px; }
+
+    .cta {
+      text-align: center;
+      border: 1px solid rgba(255,122,0,.35);
+      border-radius: 34px;
+      padding: 54px 24px;
+      background: radial-gradient(circle at 50% 0%, rgba(255,122,0,.20), transparent 42%), rgba(255,255,255,.035);
+    }
+
+    .cta h2 {
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      line-height: 1.03;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      max-width: 780px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+      font-size: 1.15rem;
+    }
+
+    footer {
+      padding: 44px 0;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,122,0,.18);
+    }
+
+    .footer-grid {
       display: flex;
       justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
       align-items: center;
-      margin-bottom: 1em;
     }
 
-    .producto label {
-      flex: 1;
-    }
-
-    .producto input {
-      width: 60px;
-      padding: 0.3em;
-    }
-
-    .total {
-      text-align: right;
-      margin: 1.2em 0;
-      font-size: 1.2em;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      background-color: #25d366;
+    .floating-whatsapp {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #25D366;
       color: white;
-      border: none;
-      padding: 1em;
-      font-size: 1em;
-      border-radius: 5px;
-      cursor: pointer;
+      font-size: 2rem;
+      z-index: 30;
+      box-shadow: 0 0 30px rgba(37,211,102,.55);
     }
 
-    button:hover {
-      background-color: #20c05c;
+    @media (max-width: 900px) {
+      .menu { display: none; }
+      .hero-grid, .stats, .cards, .process, .plans { grid-template-columns: 1fr; }
+      .hero { padding-top: 56px; }
+      .hero p { font-size: 1.05rem; }
+      .plan.featured { transform: none; }
+      .dash-row { grid-template-columns: 1fr; }
+      h1 { letter-spacing: -1px; }
     }
   </style>
 </head>
-<body>
 
+<body>
   <header>
-    <img src="logotipo-jugos-tia-martha.png" alt="Logotipo" class="logo" />
-    <h1>Jugos Tía Martha</h1>
-    <p>Deliciosos jugos, tacos y más para disfrutar</p>
-    <a class="btn-wsp" href="https://wa.me/593986535080" target="_blank">Contáctanos por WhatsApp</a>
+    <div class="container nav">
+      <a class="brand" href="#inicio">
+        <div class="brand-mark">RS4</div>
+        <div class="brand-text">
+          <strong>RECTIMATIC</strong>
+          <span>SMART SOLUTION SOFTWARE SYSTEM</span>
+        </div>
+      </a>
+
+      <nav class="menu">
+        <a href="#software">Software</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#planes">Planes</a>
+        <a href="#contacto">Contacto</a>
+        <a class="btn btn-primary" href="https://wa.me/593000000000" target="_blank">WhatsApp</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
-    <h2>Haz tu pedido</h2>
-    <form id="formularioPedido">
-      <h3>🥦 Jugos Verdes</h3>
-      <div class="producto"><label>Pepino ($1.00)</label><input type="number" id="pepino" min="0" value="0" /></div>
-      <div class="producto"><label>Apio, manzana y kiwi ($1.50)</label><input type="number" id="kiwi" min="0" value="0" /></div>
-      <div class="producto"><label>Apio, manzana y perejil ($1.50)</label><input type="number" id="perejil" min="0" value="0" /></div>
-      <div class="producto"><label>Piña y espinaca ($1.50)</label><input type="number" id="espinaca" min="0" value="0" /></div>
+  <main id="inicio">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="tag">⚙️ SOFTWARE ESPECIALIZADO PARA RECTIFICADORAS</div>
+          <h1>
+            Control total para tu
+            <span class="gradient">rectificadora</span>
+          </h1>
+          <p>
+            RS4 Rectimatic transforma la gestión de tu rectificadora con órdenes de trabajo,
+            clientes, inventario, mano de obra, facturación electrónica, reportes y usuarios
+            desde una sola plataforma.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#planes">Ver planes →</a>
+            <a class="btn btn-dark" href="https://wa.me/593000000000" target="_blank">Solicitar demo</a>
+          </div>
+        </div>
 
-      <h3>🍹 Jugos Naturales</h3>
-      <div class="producto"><label>Sandía ($1.00)</label><input type="number" id="sandia" min="0" value="0" /></div>
-      <div class="producto"><label>Maracuyá ($1.00)</label><input type="number" id="maracuya" min="0" value="0" /></div>
-      <div class="producto"><label>Mora ($1.00)</label><input type="number" id="mora" min="0" value="0" /></div>
-      <div class="producto"><label>Naranja ($1.00)</label><input type="number" id="naranja" min="0" value="0" /></div>
+        <div class="visual-card">
+          <div class="mock-browser">
+            <div class="mock-top">
+              <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="dashboard">
+              <div class="dash-row">
+                <div class="dash-box"><b>408</b><span>Clientes registrados</span></div>
+                <div class="dash-box"><b>711</b><span>Mecánicos / usuarios</span></div>
+              </div>
+              <div class="dash-row">
+                <div class="dash-box"><b>450</b><span>Órdenes totales</span></div>
+                <div class="dash-box"><b>24/7</b><span>Acceso en la nube</span></div>
+              </div>
+              <div class="dash-box"><b>99.99%</b><span>Sistema online, seguro y disponible</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      <h3>🥙 Tostadas</h3>
-      <div class="producto"><label>Tostada de queso ($1.00)</label><input type="number" id="queso" min="0" value="0" /></div>
-      <div class="producto"><label>Tostada mixta ($1.75)</label><input type="number" id="mixta" min="0" value="0" /></div>
+      <div class="container stats">
+        <div class="stat"><b>500+</b><span>USUARIOS NIVEL NACIONAL</span></div>
+        <div class="stat"><b>24/7</b><span>SOPORTE Y ACCESO</span></div>
+        <div class="stat"><b>100%</b><span>ENFOCADO EN RECTIFICADORAS</span></div>
+      </div>
+    </section>
 
-      <div class="total"><strong>Total: $<span id="total">0.00</span></strong></div>
-      <button type="submit" class="btn-wsp">Enviar pedido por WhatsApp</button>
-    </form>
+    <section class="section" id="software">
+      <div class="container">
+        <div class="section-title">
+          <h2>Un sistema hecho para operar mejor</h2>
+          <p>
+            Deja atrás los registros dispersos. Rectimatic organiza la información clave
+            de tu rectificadora y te ayuda a tomar decisiones con mayor control.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <div class="icon">📋</div>
+            <h3>Órdenes de trabajo</h3>
+            <p>Registra cada motor, servicio, estado, detalle de mano de obra y seguimiento hasta la entrega.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">👥</div>
+            <h3>Clientes</h3>
+            <p>Administra historial, datos, trabajos realizados, facturación y seguimiento comercial.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">📦</div>
+            <h3>Inventario</h3>
+            <p>Controla repuestos, productos, lista de precios, carga de imágenes y disponibilidad.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">📊</div>
+            <h3>Reportes</h3>
+            <p>Visualiza información administrativa y operativa para medir producción, ventas y resultados.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">🔐</div>
+            <h3>Seguridad</h3>
+            <p>Copias de seguridad, usuarios, permisos y protección de información crítica del negocio.</p>
+          </article>
+
+          <article class="card">
+            <div class="icon">☁️</div>
+            <h3>Nube</h3>
+            <p>Acceso desde cualquier dispositivo compatible, sin depender de una sola computadora.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="modulos">
+      <div class="container">
+        <div class="section-title">
+          <h2>Implementación simple</h2>
+          <p>Desde la activación hasta el uso diario, el proceso está pensado para que tu equipo pueda adaptarse rápido.</p>
+        </div>
+
+        <div class="process">
+          <div class="step">
+            <div class="num">1</div>
+            <h3>Solicitas la demo</h3>
+            <p>Revisamos las necesidades de tu rectificadora.</p>
+          </div>
+
+          <div class="step">
+            <div class="num">2</div>
+            <h3>Configuramos</h3>
+            <p>Activamos usuarios, datos iniciales y módulos.</p>
+          </div>
+
+          <div class="step">
+            <div class="num">3</div>
+            <h3>Capacitamos</h3>
+            <p>Tu equipo aprende a registrar y controlar operaciones.</p>
+          </div>
+
+          <div class="step">
+            <div class="num">4</div>
+            <h3>Empiezas a trabajar</h3>
+            <p>Operas con control, reportes y seguimiento.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="planes">
+      <div class="container">
+        <div class="section-title">
+          <h2>Planes para cada etapa</h2>
+          <p>Elige el plan ideal para comenzar, probar o escalar la administración de tu rectificadora.</p>
+        </div>
+
+        <div class="plans">
+          <article class="plan">
+            <small>PRUEBA FREE</small>
+            <div class="price">1 día</div>
+            <p>Acceso completo para conocer el sistema.</p>
+            <ul>
+              <li>Acceso completo</li>
+              <li>Prueba del panel</li>
+              <li>Revisión de funcionalidades</li>
+            </ul>
+            <a class="btn btn-dark" href="https://wa.me/593000000000" target="_blank">Solicitar</a>
+          </article>
+
+          <article class="plan featured">
+            <small>STANDARD</small>
+            <div class="price">$55 <span>/ mes</span></div>
+            <p>Ideal para rectificadoras que desean iniciar su control digital.</p>
+            <ul>
+              <li>Acceso completo</li>
+              <li>Lista de precios</li>
+              <li>2 usuarios</li>
+              <li>Soporte 24/7</li>
+              <li>Carga de imágenes</li>
+            </ul>
+            <a class="btn btn-primary" href="https://wa.me/593000000000" target="_blank">Comprar</a>
+          </article>
+
+          <article class="plan">
+            <small>PREMIUM</small>
+            <div class="price">$100 <span>/ mes</span></div>
+            <p>Para rectificadoras que necesitan mayor capacidad y control.</p>
+            <ul>
+              <li>Acceso completo</li>
+              <li>Carga de datos</li>
+              <li>Usuarios ilimitados</li>
+              <li>Almacenamiento ilimitado</li>
+              <li>Facturación electrónica</li>
+              <li>Carga de imágenes</li>
+            </ul>
+            <a class="btn btn-dark" href="https://wa.me/593000000000" target="_blank">Comprar</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contacto">
+      <div class="container">
+        <div class="cta">
+          <h2>Moderniza tu rectificadora con RS4 Rectimatic</h2>
+          <p>
+            Controla tus procesos, reduce desorden administrativo y ofrece una atención más organizada a tus clientes.
+          </p>
+          <a class="btn btn-primary" href="https://wa.me/593000000000" target="_blank">Hablar por WhatsApp →</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    const productos = [
-      { id: 'pepino', nombre: 'sandía', tipo: 'jugo', precio: 1 },
-      { id: 'kiwi', nombre: 'apio, manzana y kiwi', tipo: 'jugo', precio: 1.5 },
-      { id: 'perejil', nombre: 'apio, manzana y perejil', tipo: 'jugo', precio: 1.5 },
-      { id: 'espinaca', nombre: 'piña y espinaca', tipo: 'jugo', precio: 1.5 },
-      { id: 'sandia', nombre: 'sandía', tipo: 'jugo', precio: 1 },
-      { id: 'maracuya', nombre: 'maracuyá', tipo: 'jugo', precio: 1 },
-      { id: 'mora', nombre: 'mora', tipo: 'jugo', precio: 1 },
-      { id: 'naranja', nombre: 'naranja', tipo: 'jugo', precio: 1 },
-      { id: 'queso', nombre: 'tostada de queso', tipo: 'tostada', precio: 1 },
-      { id: 'mixta', nombre: 'tostada mixta', tipo: 'tostada', precio: 1.75 }
-    ];
+  <footer>
+    <div class="container footer-grid">
+      <div class="brand">
+        <div class="brand-mark">RS4</div>
+        <div class="brand-text">
+          <strong>RECTIMATIC</strong>
+          <span>SOFTWARE PARA RECTIFICADORAS</span>
+        </div>
+      </div>
+      <p>© 2026 RS4 Rectimatic. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
-    document.getElementById("formularioPedido").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      let mensaje = "Hola, quiero hacer el siguiente pedido:\n\n";
-      let total = 0;
-
-      productos.forEach(producto => {
-        const cantidad = parseInt(document.getElementById(producto.id).value);
-        if (cantidad > 0) {
-          if (producto.tipo === "jugo") {
-            const texto = cantidad === 1 ? `1 jugo de ${producto.nombre}` : `${cantidad} jugos de ${producto.nombre}`;
-            mensaje += `- ${texto} = $${(producto.precio * cantidad).toFixed(2)}\n`;
-          } else {
-            const texto = cantidad === 1 ? `1 ${producto.nombre}` : `${cantidad} ${producto.nombre}s`;
-            mensaje += `- ${texto} = $${(producto.precio * cantidad).toFixed(2)}\n`;
-          }
-          total += producto.precio * cantidad;
-        }
-      });
-
-      mensaje += `\nTotal: $${total.toFixed(2)}`;
-
-      document.getElementById("total").textContent = total.toFixed(2);
-
-      const numero = "593986535080";
-      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-      window.open(url, "_blank");
-    });
-  </script>
+  <a class="floating-whatsapp" href="https://wa.me/593000000000" target="_blank" aria-label="WhatsApp">☎</a>
 </body>
 </html>
+'''
+
+path = Path("/mnt/data/index_rectimatic.html")
+path.write_text(html, encoding="utf-8")
+print(f"Archivo creado: {path}")
