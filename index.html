@@ -3,436 +3,236 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>RS4 Rectimatic | Software Administrativo para Rectificadoras</title>
   <meta name="description" content="RS4 Rectimatic: sistema administrativo para rectificadoras. Control de órdenes, clientes, inventario, facturación, reportes y usuarios desde una plataforma moderna." />
 
   <style>
-    :root {
-      --bg: #070914;
-      --bg2: #0c1020;
-      --card: rgba(13, 17, 32, 0.88);
-      --red: #e31b23;
-      --orange: #ff7a00;
-      --orange2: #ff9b3d;
-      --white: #ffffff;
-      --muted: #a7adbd;
-      --line: rgba(255, 122, 0, 0.22);
-      --radius: 26px;
+    :root{
+      --bg:#070914;
+      --bg2:#0c1020;
+      --card:rgba(13,17,32,.9);
+      --red:#e31b23;
+      --orange:#ff7a00;
+      --orange2:#ff9b3d;
+      --white:#fff;
+      --muted:#a7adbd;
+      --line:rgba(255,122,0,.24);
+      --radius:26px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--white);
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Arial,Helvetica,sans-serif;
+      color:var(--white);
       background:
-        linear-gradient(rgba(255,122,0,.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,122,0,.045) 1px, transparent 1px),
-        radial-gradient(circle at 20% 10%, rgba(227,27,35,.20), transparent 28%),
-        radial-gradient(circle at 80% 20%, rgba(255,122,0,.18), transparent 30%),
+        linear-gradient(rgba(255,122,0,.045) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,122,0,.045) 1px,transparent 1px),
+        radial-gradient(circle at 20% 10%,rgba(227,27,35,.22),transparent 28%),
+        radial-gradient(circle at 80% 20%,rgba(255,122,0,.18),transparent 30%),
         var(--bg);
-      background-size: 90px 90px, 90px 90px, auto, auto, auto;
-      overflow-x: hidden;
+      background-size:90px 90px,90px 90px,auto,auto,auto;
+      overflow-x:hidden;
     }
 
-    a { color: inherit; text-decoration: none; }
-    .container { width: min(1180px, 92%); margin: auto; }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(7,9,20,.88);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,122,0,.18);
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1180px,92%);margin:auto}
+    header{
+      position:sticky;top:0;z-index:20;
+      background:rgba(7,9,20,.9);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(255,122,0,.18);
     }
-
-    .nav {
-      height: 86px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .nav{height:86px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:14px;font-weight:900;letter-spacing:1px}
+    .brand-mark{
+      width:58px;height:58px;border-radius:16px;display:grid;place-items:center;
+      color:white;font-weight:900;background:linear-gradient(135deg,var(--red),var(--orange));
+      box-shadow:0 0 30px rgba(255,122,0,.45)
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      font-weight: 900;
-      letter-spacing: 1px;
+    .brand-text strong{display:block;font-size:1.35rem}
+    .brand-text span{display:block;color:var(--muted);font-size:.76rem;letter-spacing:2px;margin-top:2px}
+    .menu{display:flex;gap:26px;align-items:center;color:#d7dbea;font-size:.96rem}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      min-height:52px;padding:0 24px;border-radius:16px;
+      border:1px solid rgba(255,122,0,.35);font-weight:800;transition:.25s
     }
+    .btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange2));color:white;box-shadow:0 0 35px rgba(255,122,0,.28)}
+    .btn-dark{background:rgba(255,255,255,.04);color:white}
+    .btn:hover{transform:translateY(-3px)}
 
-    .brand-mark {
-      width: 58px;
-      height: 58px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      color: white;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--red), var(--orange));
-      box-shadow: 0 0 30px rgba(255,122,0,.45);
+    .hero{padding:92px 0 70px;position:relative}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:center}
+    .tag{
+      display:inline-flex;align-items:center;gap:10px;color:var(--orange2);
+      border:1px solid rgba(255,122,0,.35);border-radius:999px;padding:12px 18px;
+      background:rgba(255,122,0,.06);font-weight:800;letter-spacing:1px;margin-bottom:26px
     }
+    h1{font-size:clamp(3.2rem,8vw,6.6rem);line-height:.95;letter-spacing:-3px;margin-bottom:26px}
+    .gradient{display:block;color:var(--orange);text-shadow:0 0 30px rgba(255,122,0,.55)}
+    .hero p{color:var(--muted);font-size:clamp(1.05rem,2vw,1.35rem);line-height:1.65;max-width:680px;margin-bottom:34px}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
 
-    .brand-text strong {
-      display: block;
-      font-size: 1.35rem;
+    .visual-card{
+      border:1px solid var(--line);border-radius:var(--radius);
+      background:linear-gradient(180deg,rgba(255,122,0,.10),rgba(255,255,255,.025));
+      padding:22px;box-shadow:0 0 70px rgba(255,122,0,.13);overflow:hidden
     }
+    .mock-browser{background:#0b0f1d;border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden}
+    .mock-top{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--orange);opacity:.9}
+    .dot:nth-child(2){background:var(--red)}.dot:nth-child(3){background:#4ecb71}
+    .dashboard{padding:24px;display:grid;gap:14px}
+    .dash-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .dash-box{min-height:112px;border-radius:18px;padding:18px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+    .dash-box b{display:block;color:var(--orange2);font-size:2rem;margin-bottom:8px}
+    .dash-box span{color:var(--muted);font-size:.95rem}
 
-    .brand-text span {
-      display: block;
-      color: var(--muted);
-      font-size: .76rem;
-      letter-spacing: 2px;
-      margin-top: 2px;
+    .section{padding:78px 0}
+    .section-title{text-align:center;margin-bottom:48px}
+    .section-title h2{font-size:clamp(2.3rem,5vw,4.6rem);line-height:1.02;letter-spacing:-2px;margin-bottom:18px}
+    .section-title p{color:var(--muted);max-width:760px;margin:auto;font-size:1.15rem;line-height:1.7}
+
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+    .stat{text-align:center;padding:34px 18px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)}
+    .stat b{color:var(--orange);font-size:3.8rem;text-shadow:0 0 25px rgba(255,122,0,.45)}
+    .stat span{display:block;color:var(--muted);letter-spacing:3px;margin-top:10px}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{min-height:250px;border:1px solid var(--line);border-radius:var(--radius);padding:32px;background:var(--card);transition:.25s}
+    .card:hover{transform:translateY(-6px);border-color:rgba(255,122,0,.60);box-shadow:0 0 45px rgba(255,122,0,.12)}
+    .icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:rgba(255,122,0,.10);color:var(--orange);font-size:1.7rem;margin-bottom:24px}
+    .card h3{font-size:1.45rem;margin-bottom:14px}
+    .card p{color:var(--muted);line-height:1.65;font-size:1rem}
+
+    .screens-section{
+      overflow:hidden;
+      background:linear-gradient(180deg,rgba(255,122,0,.03),rgba(255,255,255,.015));
+      border-top:1px solid rgba(255,122,0,.12);
+      border-bottom:1px solid rgba(255,122,0,.12);
     }
-
-    .menu {
-      display: flex;
-      gap: 26px;
-      align-items: center;
-      color: #d7dbea;
-      font-size: .96rem;
+    .phone-stage{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:28px;
+      min-height:560px;
+      position:relative;
     }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-height: 52px;
-      padding: 0 24px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,122,0,.35);
-      font-weight: 800;
-      transition: .25s;
+    .phone{
+      width:245px;
+      height:500px;
+      border-radius:42px;
+      padding:14px;
+      background:linear-gradient(145deg,#f7f7f7,#161821);
+      box-shadow:0 26px 65px rgba(0,0,0,.45),0 0 35px rgba(255,122,0,.12);
+      border:2px solid rgba(255,255,255,.18);
+      transition:.35s;
     }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--orange), var(--orange2));
-      color: white;
-      box-shadow: 0 0 35px rgba(255,122,0,.28);
+    .phone.side{
+      opacity:.38;
+      transform:scale(.84);
+      filter:blur(.2px);
     }
-
-    .btn-dark {
-      background: rgba(255,255,255,.04);
-      color: white;
+    .phone-screen{
+      height:100%;
+      border-radius:31px;
+      background:#f7f8fb;
+      color:#111827;
+      overflow:hidden;
+      position:relative;
     }
-
-    .btn:hover { transform: translateY(-3px); }
-
-    .hero {
-      padding: 92px 0 70px;
-      position: relative;
+    .notch{
+      width:88px;height:22px;background:#0b0d12;border-radius:0 0 14px 14px;
+      position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:3;
     }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 44px;
-      align-items: center;
+    .app-head{
+      padding:38px 16px 14px;
+      background:linear-gradient(135deg,var(--red),var(--orange));
+      color:white;
+      text-align:center;
+      font-weight:900;
+      letter-spacing:1px;
     }
-
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--orange2);
-      border: 1px solid rgba(255,122,0,.35);
-      border-radius: 999px;
-      padding: 12px 18px;
-      background: rgba(255,122,0,.06);
-      font-weight: 800;
-      letter-spacing: 1px;
-      margin-bottom: 26px;
+    .metric-list{padding:16px;display:grid;gap:11px}
+    .metric{
+      border-radius:12px;
+      padding:14px;
+      color:white;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      font-weight:800;
     }
-
-    h1 {
-      font-size: clamp(3.2rem, 8vw, 6.6rem);
-      line-height: .95;
-      letter-spacing: -3px;
-      margin-bottom: 26px;
+    .metric small{display:block;font-size:.72rem;opacity:.85;font-weight:700}
+    .m1{background:#f0a44c}.m2{background:#55bfd5}.m3{background:#232b54}.m4{background:#63bc70}
+    .fake-table{padding:0 16px 16px}
+    .row{
+      height:24px;border-radius:6px;background:#edf0f7;margin-bottom:7px;
+      display:grid;grid-template-columns:1.3fr .7fr .5fr;gap:6px;padding:5px;
     }
+    .cell{background:white;border-radius:4px}
+    .orange-cell{background:#ffb15d}
 
-    .gradient {
-      display: block;
-      color: var(--orange);
-      text-shadow: 0 0 30px rgba(255,122,0,.55);
+    .form-lines{padding:18px;display:grid;gap:12px}
+    .form-title{font-size:.9rem;font-weight:900;color:var(--orange)}
+    .line{height:18px;border-radius:8px;background:#e9edf6}
+    .line.short{width:62%}
+    .line.blue{background:#bfe4ef}.line.green{background:#cce9c7}
+    .table-mini{border:1px solid #d6dbe7;border-radius:10px;overflow:hidden;margin-top:10px}
+    .table-mini div{height:28px;border-bottom:1px solid #d6dbe7;background:white}
+    .table-mini div:nth-child(odd){background:#f2f5fb}
+
+    .drawing-grid{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .drawing{
+      height:70px;border:1px solid #d9dee9;border-radius:12px;background:
+      linear-gradient(45deg,transparent 46%,#cfd6e5 47%,#cfd6e5 53%,transparent 54%),
+      linear-gradient(-45deg,transparent 46%,#cfd6e5 47%,#cfd6e5 53%,transparent 54%),
+      #fff;
     }
+    .block-img{grid-column:span 2;height:86px;border-radius:12px;background:#dfe4ef;position:relative}
+    .block-img:after{content:"BLOCK";position:absolute;inset:auto 0 10px;text-align:center;color:#8b94a6;font-weight:900}
 
-    .hero p {
-      color: var(--muted);
-      font-size: clamp(1.05rem, 2vw, 1.35rem);
-      line-height: 1.65;
-      max-width: 680px;
-      margin-bottom: 34px;
-    }
+    .screen-dots{display:flex;justify-content:center;gap:10px;margin-top:-20px}
+    .screen-dots span{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,.25)}
+    .screen-dots span:nth-child(2){background:var(--orange);box-shadow:0 0 18px rgba(255,122,0,.8)}
 
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    .step{text-align:center;padding:26px 16px}
+    .num{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;margin:0 auto 20px;color:var(--orange);border:1px solid rgba(255,122,0,.45);font-size:2.2rem;font-weight:900;box-shadow:0 0 28px rgba(255,122,0,.18)}
+    .step h3{margin-bottom:10px}.step p{color:var(--muted);line-height:1.55}
 
-    .visual-card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,122,0,.10), rgba(255,255,255,.025));
-      padding: 22px;
-      box-shadow: 0 0 70px rgba(255,122,0,.13);
-      position: relative;
-      overflow: hidden;
-    }
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+    .plan{border:1px solid var(--line);border-radius:var(--radius);padding:34px;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025));position:relative}
+    .plan.featured{border-color:rgba(255,122,0,.75);box-shadow:0 0 60px rgba(255,122,0,.18);transform:scale(1.03)}
+    .plan small{color:var(--orange2);letter-spacing:2px;font-weight:900}
+    .price{font-size:4.2rem;font-weight:900;margin:20px 0 6px}
+    .price span{font-size:1.1rem;color:var(--muted)}
+    .plan p{color:var(--muted);line-height:1.55}
+    .plan ul{list-style:none;margin:24px 0;display:grid;gap:14px;color:#dfe4f3}
+    .plan li::before{content:"✓";color:var(--orange);font-weight:900;margin-right:10px}
 
-    .mock-browser {
-      background: #0b0f1d;
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 22px;
-      overflow: hidden;
-    }
+    .cta{text-align:center;border:1px solid rgba(255,122,0,.35);border-radius:34px;padding:54px 24px;background:radial-gradient(circle at 50% 0%,rgba(255,122,0,.20),transparent 42%),rgba(255,255,255,.035)}
+    .cta h2{font-size:clamp(2.4rem,6vw,5rem);line-height:1.03;margin-bottom:20px}
+    .cta p{color:var(--muted);max-width:780px;margin:0 auto 28px;line-height:1.7;font-size:1.15rem}
 
-    .mock-top {
-      height: 44px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 0 16px;
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
+    footer{padding:44px 0;color:var(--muted);border-top:1px solid rgba(255,122,0,.18)}
+    .footer-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:center}
+    .floating-whatsapp{position:fixed;right:20px;bottom:20px;width:62px;height:62px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:white;font-size:2rem;z-index:30;box-shadow:0 0 30px rgba(37,211,102,.55)}
 
-    .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--orange); opacity: .9; }
-    .dot:nth-child(2) { background: var(--red); }
-    .dot:nth-child(3) { background: #4ecb71; }
-
-    .dashboard {
-      padding: 24px;
-      display: grid;
-      gap: 14px;
-    }
-
-    .dash-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-
-    .dash-box {
-      min-height: 112px;
-      border-radius: 18px;
-      padding: 18px;
-      background: rgba(255,255,255,.045);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .dash-box b {
-      display: block;
-      color: var(--orange2);
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-
-    .dash-box span { color: var(--muted); font-size: .95rem; }
-
-    .section { padding: 78px 0; }
-    .section-title { text-align: center; margin-bottom: 48px; }
-    .section-title h2 {
-      font-size: clamp(2.3rem, 5vw, 4.6rem);
-      line-height: 1.02;
-      letter-spacing: -2px;
-      margin-bottom: 18px;
-    }
-    .section-title p {
-      color: var(--muted);
-      max-width: 760px;
-      margin: auto;
-      font-size: 1.15rem;
-      line-height: 1.7;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 48px;
-    }
-
-    .stat {
-      text-align: center;
-      padding: 34px 18px;
-      border-top: 1px solid rgba(255,255,255,.08);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
-
-    .stat b {
-      color: var(--orange);
-      font-size: 3.8rem;
-      text-shadow: 0 0 25px rgba(255,122,0,.45);
-    }
-
-    .stat span {
-      display: block;
-      color: var(--muted);
-      letter-spacing: 3px;
-      margin-top: 10px;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-    }
-
-    .card {
-      min-height: 250px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 32px;
-      background: var(--card);
-      transition: .25s;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255,122,0,.60);
-      box-shadow: 0 0 45px rgba(255,122,0,.12);
-    }
-
-    .icon {
-      width: 58px;
-      height: 58px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      background: rgba(255,122,0,.10);
-      color: var(--orange);
-      font-size: 1.7rem;
-      margin-bottom: 24px;
-    }
-
-    .card h3 { font-size: 1.45rem; margin-bottom: 14px; }
-    .card p { color: var(--muted); line-height: 1.65; font-size: 1rem; }
-
-    .process {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .step {
-      text-align: center;
-      padding: 26px 16px;
-    }
-
-    .num {
-      width: 86px;
-      height: 86px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      margin: 0 auto 20px;
-      color: var(--orange);
-      border: 1px solid rgba(255,122,0,.45);
-      font-size: 2.2rem;
-      font-weight: 900;
-      box-shadow: 0 0 28px rgba(255,122,0,.18);
-    }
-
-    .step h3 { margin-bottom: 10px; }
-    .step p { color: var(--muted); line-height: 1.55; }
-
-    .plans {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 22px;
-      align-items: stretch;
-    }
-
-    .plan {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 34px;
-      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
-      position: relative;
-    }
-
-    .plan.featured {
-      border-color: rgba(255,122,0,.75);
-      box-shadow: 0 0 60px rgba(255,122,0,.18);
-      transform: scale(1.03);
-    }
-
-    .plan small {
-      color: var(--orange2);
-      letter-spacing: 2px;
-      font-weight: 900;
-    }
-
-    .price {
-      font-size: 4.2rem;
-      font-weight: 900;
-      margin: 20px 0 6px;
-    }
-
-    .price span { font-size: 1.1rem; color: var(--muted); }
-    .plan ul { list-style: none; margin: 24px 0; display: grid; gap: 14px; color: #dfe4f3; }
-    .plan li::before { content: "✓"; color: var(--orange); font-weight: 900; margin-right: 10px; }
-
-    .cta {
-      text-align: center;
-      border: 1px solid rgba(255,122,0,.35);
-      border-radius: 34px;
-      padding: 54px 24px;
-      background: radial-gradient(circle at 50% 0%, rgba(255,122,0,.20), transparent 42%), rgba(255,255,255,.035);
-    }
-
-    .cta h2 {
-      font-size: clamp(2.4rem, 6vw, 5rem);
-      line-height: 1.03;
-      margin-bottom: 20px;
-    }
-
-    .cta p {
-      color: var(--muted);
-      max-width: 780px;
-      margin: 0 auto 28px;
-      line-height: 1.7;
-      font-size: 1.15rem;
-    }
-
-    footer {
-      padding: 44px 0;
-      color: var(--muted);
-      border-top: 1px solid rgba(255,122,0,.18);
-    }
-
-    .footer-grid {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .floating-whatsapp {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 62px;
-      height: 62px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: #25D366;
-      color: white;
-      font-size: 2rem;
-      z-index: 30;
-      box-shadow: 0 0 30px rgba(37,211,102,.55);
-    }
-
-    @media (max-width: 900px) {
-      .menu { display: none; }
-      .hero-grid, .stats, .cards, .process, .plans { grid-template-columns: 1fr; }
-      .hero { padding-top: 56px; }
-      .hero p { font-size: 1.05rem; }
-      .plan.featured { transform: none; }
-      .dash-row { grid-template-columns: 1fr; }
-      h1 { letter-spacing: -1px; }
+    @media(max-width:900px){
+      .menu{display:none}
+      .hero-grid,.stats,.cards,.process,.plans{grid-template-columns:1fr}
+      .hero{padding-top:56px}
+      .hero p{font-size:1.05rem}
+      .plan.featured{transform:none}
+      .dash-row{grid-template-columns:1fr}
+      h1{letter-spacing:-1px}
+      .phone-stage{gap:12px;min-height:520px}
+      .phone{width:230px;height:470px}
+      .phone.side{width:180px;height:410px;margin-left:-110px;margin-right:-110px;opacity:.28}
     }
   </style>
 </head>
@@ -450,7 +250,7 @@
 
       <nav class="menu">
         <a href="#software">Software</a>
-        <a href="#modulos">Módulos</a>
+        <a href="#pantallas">Pantallas</a>
         <a href="#planes">Planes</a>
         <a href="#contacto">Contacto</a>
         <a class="btn btn-primary" href="https://wa.me/593000000000" target="_blank">WhatsApp</a>
@@ -485,14 +285,14 @@
             </div>
             <div class="dashboard">
               <div class="dash-row">
-                <div class="dash-box"><b>408</b><span>Clientes registrados</span></div>
-                <div class="dash-box"><b>711</b><span>Mecánicos / usuarios</span></div>
+                <div class="dash-box"><b>Clientes</b><span>Registro e historial</span></div>
+                <div class="dash-box"><b>Órdenes</b><span>Trabajos ingresados</span></div>
               </div>
               <div class="dash-row">
-                <div class="dash-box"><b>450</b><span>Órdenes totales</span></div>
+                <div class="dash-box"><b>Inventario</b><span>Repuestos y productos</span></div>
                 <div class="dash-box"><b>24/7</b><span>Acceso en la nube</span></div>
               </div>
-              <div class="dash-box"><b>99.99%</b><span>Sistema online, seguro y disponible</span></div>
+              <div class="dash-box"><b>Reportes</b><span>Control administrativo y operativo</span></div>
             </div>
           </div>
         </div>
@@ -516,76 +316,95 @@
         </div>
 
         <div class="cards">
-          <article class="card">
-            <div class="icon">📋</div>
-            <h3>Órdenes de trabajo</h3>
-            <p>Registra cada motor, servicio, estado, detalle de mano de obra y seguimiento hasta la entrega.</p>
-          </article>
-
-          <article class="card">
-            <div class="icon">👥</div>
-            <h3>Clientes</h3>
-            <p>Administra historial, datos, trabajos realizados, facturación y seguimiento comercial.</p>
-          </article>
-
-          <article class="card">
-            <div class="icon">📦</div>
-            <h3>Inventario</h3>
-            <p>Controla repuestos, productos, lista de precios, carga de imágenes y disponibilidad.</p>
-          </article>
-
-          <article class="card">
-            <div class="icon">📊</div>
-            <h3>Reportes</h3>
-            <p>Visualiza información administrativa y operativa para medir producción, ventas y resultados.</p>
-          </article>
-
-          <article class="card">
-            <div class="icon">🔐</div>
-            <h3>Seguridad</h3>
-            <p>Copias de seguridad, usuarios, permisos y protección de información crítica del negocio.</p>
-          </article>
-
-          <article class="card">
-            <div class="icon">☁️</div>
-            <h3>Nube</h3>
-            <p>Acceso desde cualquier dispositivo compatible, sin depender de una sola computadora.</p>
-          </article>
+          <article class="card"><div class="icon">📋</div><h3>Órdenes de trabajo</h3><p>Registra cada motor, servicio, estado, detalle de mano de obra y seguimiento hasta la entrega.</p></article>
+          <article class="card"><div class="icon">👥</div><h3>Clientes</h3><p>Administra historial, datos, trabajos realizados, facturación y seguimiento comercial.</p></article>
+          <article class="card"><div class="icon">📦</div><h3>Inventario</h3><p>Controla repuestos, productos, lista de precios, carga de imágenes y disponibilidad.</p></article>
+          <article class="card"><div class="icon">📊</div><h3>Reportes</h3><p>Visualiza información administrativa y operativa para medir producción, ventas y resultados.</p></article>
+          <article class="card"><div class="icon">🔐</div><h3>Seguridad</h3><p>Copias de seguridad, usuarios, permisos y protección de información crítica del negocio.</p></article>
+          <article class="card"><div class="icon">☁️</div><h3>Nube</h3><p>Acceso desde cualquier dispositivo compatible, sin depender de una sola computadora.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="modulos">
+    <section class="section screens-section" id="pantallas">
+      <div class="container">
+        <div class="section-title">
+          <h2>Demostración visual del sistema</h2>
+          <p>
+            Esta sección muestra cómo se podría presentar Rectimatic en formato móvil.
+            Las pantallas son referenciales y luego se pueden reemplazar por capturas reales del software.
+          </p>
+        </div>
+
+        <div class="phone-stage">
+          <div class="phone side">
+            <div class="phone-screen">
+              <div class="notch"></div>
+              <div class="app-head">PANEL</div>
+              <div class="metric-list">
+                <div class="metric m1"><div>408<small>CLIENTES</small></div>👤</div>
+                <div class="metric m2"><div>711<small>MECÁNICOS</small></div>👥</div>
+                <div class="metric m3"><div>450<small>ÓRDENES</small></div>📄</div>
+                <div class="metric m4"><div>0<small>ANULADAS</small></div>✅</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="notch"></div>
+              <div class="app-head">ORDEN DE TRABAJO</div>
+              <div class="form-lines">
+                <div class="form-title">Datos del cliente</div>
+                <div class="line"></div>
+                <div class="line short"></div>
+                <div class="line blue"></div>
+                <div class="form-title">Detalle del motor</div>
+                <div class="line green"></div>
+                <div class="table-mini">
+                  <div></div><div></div><div></div><div></div><div></div>
+                </div>
+              </div>
+              <div class="fake-table">
+                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="phone side">
+            <div class="phone-screen">
+              <div class="notch"></div>
+              <div class="app-head">FICHA TÉCNICA</div>
+              <div class="drawing-grid">
+                <div class="drawing"></div>
+                <div class="drawing"></div>
+                <div class="drawing"></div>
+                <div class="drawing"></div>
+                <div class="block-img"></div>
+                <div class="line"></div>
+                <div class="line short"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-dots"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="container">
         <div class="section-title">
           <h2>Implementación simple</h2>
           <p>Desde la activación hasta el uso diario, el proceso está pensado para que tu equipo pueda adaptarse rápido.</p>
         </div>
-
         <div class="process">
-          <div class="step">
-            <div class="num">1</div>
-            <h3>Solicitas la demo</h3>
-            <p>Revisamos las necesidades de tu rectificadora.</p>
-          </div>
-
-          <div class="step">
-            <div class="num">2</div>
-            <h3>Configuramos</h3>
-            <p>Activamos usuarios, datos iniciales y módulos.</p>
-          </div>
-
-          <div class="step">
-            <div class="num">3</div>
-            <h3>Capacitamos</h3>
-            <p>Tu equipo aprende a registrar y controlar operaciones.</p>
-          </div>
-
-          <div class="step">
-            <div class="num">4</div>
-            <h3>Empiezas a trabajar</h3>
-            <p>Operas con control, reportes y seguimiento.</p>
-          </div>
+          <div class="step"><div class="num">1</div><h3>Solicitas la demo</h3><p>Revisamos las necesidades de tu rectificadora.</p></div>
+          <div class="step"><div class="num">2</div><h3>Configuramos</h3><p>Activamos usuarios, datos iniciales y módulos.</p></div>
+          <div class="step"><div class="num">3</div><h3>Capacitamos</h3><p>Tu equipo aprende a registrar y controlar operaciones.</p></div>
+          <div class="step"><div class="num">4</div><h3>Empiezas a trabajar</h3><p>Operas con control, reportes y seguimiento.</p></div>
         </div>
       </div>
     </section>
