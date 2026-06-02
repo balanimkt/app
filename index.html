@@ -234,6 +234,74 @@
       .phone{width:230px;height:470px}
       .phone.side{width:180px;height:410px;margin-left:-110px;margin-right:-110px;opacity:.28}
     }
+  
+    .carousel-wrap{
+      position:relative;
+      max-width:980px;
+      margin:0 auto;
+      overflow:hidden;
+      padding:20px 0 10px;
+    }
+    .phone-track{
+      display:flex;
+      gap:26px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      -webkit-overflow-scrolling:touch;
+      padding:30px calc(50% - 122px) 42px;
+      scrollbar-width:none;
+      cursor:grab;
+    }
+    .phone-track::-webkit-scrollbar{display:none}
+    .phone-track:active{cursor:grabbing}
+    .phone-slide{
+      flex:0 0 245px;
+      scroll-snap-align:center;
+      display:flex;
+      justify-content:center;
+    }
+    .carousel-btn{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      border:1px solid rgba(255,122,0,.35);
+      background:rgba(7,9,20,.82);
+      color:white;
+      font-size:1.8rem;
+      z-index:5;
+      cursor:pointer;
+      box-shadow:0 0 24px rgba(255,122,0,.20);
+    }
+    .carousel-btn.prev{left:8px}
+    .carousel-btn.next{right:8px}
+    .carousel-dots{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:4px;
+    }
+    .carousel-dots button{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      border:0;
+      background:rgba(255,255,255,.25);
+      cursor:pointer;
+    }
+    .carousel-dots button.active{
+      background:var(--orange);
+      box-shadow:0 0 18px rgba(255,122,0,.8);
+    }
+    @media(max-width:900px){
+      .carousel-btn{display:none}
+      .phone-track{padding-left:calc(50% - 115px);padding-right:calc(50% - 115px)}
+      .phone-slide{flex-basis:230px}
+    }
+
   </style>
 </head>
 
@@ -336,61 +404,115 @@
           </p>
         </div>
 
-        <div class="phone-stage">
-          <div class="phone side">
-            <div class="phone-screen">
-              <div class="notch"></div>
-              <div class="app-head">PANEL</div>
-              <div class="metric-list">
-                <div class="metric m1"><div>408<small>CLIENTES</small></div>👤</div>
-                <div class="metric m2"><div>711<small>MECÁNICOS</small></div>👥</div>
-                <div class="metric m3"><div>450<small>ÓRDENES</small></div>📄</div>
-                <div class="metric m4"><div>0<small>ANULADAS</small></div>✅</div>
-              </div>
-            </div>
-          </div>
+        <div class="carousel-wrap">
+          <button class="carousel-btn prev" type="button" aria-label="Anterior">‹</button>
 
-          <div class="phone">
-            <div class="phone-screen">
-              <div class="notch"></div>
-              <div class="app-head">ORDEN DE TRABAJO</div>
-              <div class="form-lines">
-                <div class="form-title">Datos del cliente</div>
-                <div class="line"></div>
-                <div class="line short"></div>
-                <div class="line blue"></div>
-                <div class="form-title">Detalle del motor</div>
-                <div class="line green"></div>
-                <div class="table-mini">
-                  <div></div><div></div><div></div><div></div><div></div>
+          <div class="phone-track" id="phoneTrack">
+            <div class="phone-slide">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="notch"></div>
+                  <div class="app-head">PANEL</div>
+                  <div class="metric-list">
+                    <div class="metric m1"><div>408<small>CLIENTES</small></div>👤</div>
+                    <div class="metric m2"><div>711<small>MECÁNICOS</small></div>👥</div>
+                    <div class="metric m3"><div>450<small>ÓRDENES</small></div>📄</div>
+                    <div class="metric m4"><div>0<small>ANULADAS</small></div>✅</div>
+                  </div>
                 </div>
               </div>
-              <div class="fake-table">
-                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
-                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
-                <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+            </div>
+
+            <div class="phone-slide">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="notch"></div>
+                  <div class="app-head">ORDEN DE TRABAJO</div>
+                  <div class="form-lines">
+                    <div class="form-title">Datos del cliente</div>
+                    <div class="line"></div>
+                    <div class="line short"></div>
+                    <div class="line blue"></div>
+                    <div class="form-title">Detalle del motor</div>
+                    <div class="line green"></div>
+                    <div class="table-mini">
+                      <div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                  </div>
+                  <div class="fake-table">
+                    <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                    <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                    <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-slide">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="notch"></div>
+                  <div class="app-head">FICHA TÉCNICA</div>
+                  <div class="drawing-grid">
+                    <div class="drawing"></div>
+                    <div class="drawing"></div>
+                    <div class="drawing"></div>
+                    <div class="drawing"></div>
+                    <div class="block-img"></div>
+                    <div class="line"></div>
+                    <div class="line short"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-slide">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="notch"></div>
+                  <div class="app-head">INVENTARIO</div>
+                  <div class="form-lines">
+                    <div class="form-title">Repuestos y productos</div>
+                    <div class="line blue"></div>
+                    <div class="line"></div>
+                    <div class="line green"></div>
+                    <div class="table-mini">
+                      <div></div><div></div><div></div><div></div><div></div><div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="phone-slide">
+              <div class="phone">
+                <div class="phone-screen">
+                  <div class="notch"></div>
+                  <div class="app-head">REPORTES</div>
+                  <div class="metric-list">
+                    <div class="metric m3"><div>Ventas<small>DEL MES</small></div>📊</div>
+                    <div class="metric m1"><div>Procesos<small>EN TALLER</small></div>🔧</div>
+                    <div class="metric m4"><div>Finalizadas<small>ENTREGADAS</small></div>✅</div>
+                  </div>
+                  <div class="fake-table">
+                    <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                    <div class="row"><span class="cell"></span><span class="cell"></span><span class="cell orange-cell"></span></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="phone side">
-            <div class="phone-screen">
-              <div class="notch"></div>
-              <div class="app-head">FICHA TÉCNICA</div>
-              <div class="drawing-grid">
-                <div class="drawing"></div>
-                <div class="drawing"></div>
-                <div class="drawing"></div>
-                <div class="drawing"></div>
-                <div class="block-img"></div>
-                <div class="line"></div>
-                <div class="line short"></div>
-              </div>
-            </div>
+          <button class="carousel-btn next" type="button" aria-label="Siguiente">›</button>
+
+          <div class="carousel-dots" id="carouselDots">
+            <button class="active" type="button"></button>
+            <button type="button"></button>
+            <button type="button"></button>
+            <button type="button"></button>
+            <button type="button"></button>
           </div>
         </div>
-
-        <div class="screen-dots"><span></span><span></span><span></span><span></span><span></span></div>
       </div>
     </section>
 
@@ -488,5 +610,74 @@
   </footer>
 
   <a class="floating-whatsapp" href="https://wa.me/593000000000" target="_blank" aria-label="WhatsApp">☎</a>
+
+  <script>
+    const track = document.getElementById('phoneTrack');
+    const slides = Array.from(track.querySelectorAll('.phone-slide'));
+    const dots = Array.from(document.querySelectorAll('#carouselDots button'));
+    const prev = document.querySelector('.carousel-btn.prev');
+    const next = document.querySelector('.carousel-btn.next');
+
+    function goToSlide(index) {
+      const slide = slides[index];
+      track.scrollTo({
+        left: slide.offsetLeft - (track.clientWidth - slide.clientWidth) / 2,
+        behavior: 'smooth'
+      });
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    }
+
+    function currentIndex() {
+      const center = track.scrollLeft + track.clientWidth / 2;
+      let closest = 0;
+      let minDistance = Infinity;
+      slides.forEach((slide, i) => {
+        const slideCenter = slide.offsetLeft + slide.clientWidth / 2;
+        const distance = Math.abs(center - slideCenter);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closest = i;
+        }
+      });
+      return closest;
+    }
+
+    prev.addEventListener('click', () => {
+      goToSlide(Math.max(0, currentIndex() - 1));
+    });
+
+    next.addEventListener('click', () => {
+      goToSlide(Math.min(slides.length - 1, currentIndex() + 1));
+    });
+
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goToSlide(i)));
+
+    track.addEventListener('scroll', () => {
+      const index = currentIndex();
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    });
+
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    track.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
+
+    track.addEventListener('mouseleave', () => isDown = false);
+    track.addEventListener('mouseup', () => isDown = false);
+
+    track.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 1.4;
+      track.scrollLeft = scrollLeft - walk;
+    });
+  </script>
+
 </body>
 </html>
