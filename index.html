@@ -1,6 +1,4 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -673,8 +671,3 @@ html = r'''<!DOCTYPE html>
   <a class="floating-whatsapp" href="https://wa.me/593000000000" target="_blank" aria-label="WhatsApp">☎</a>
 </body>
 </html>
-'''
-
-path = Path("/mnt/data/index_rectimatic.html")
-path.write_text(html, encoding="utf-8")
-print(f"Archivo creado: {path}")
